@@ -143,6 +143,8 @@ growth_acc[, TFP_contrib_hcpwt := g_y - capital_contrib - g_hcpwt]
 growth_tot <- growth_acc %>% filter (growth_acc$NACE == "TOT")
 write_xlsx(growth_tot, path = "03_Output/Exercise c/c_Japan.xlsx")
 saveRDS(growth_acc, "02_Input/growth_acc_Japan.rds")
+saveRDS(dt        , "02_Input/dt_Japan.rds")
+
 
 # Plot ;)
 growth_tot <- growth_tot %>%filter(Year > 1995)
