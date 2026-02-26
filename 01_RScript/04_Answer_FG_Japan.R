@@ -1,6 +1,6 @@
 # Authors: Ellie Walters, Ece Taşan Özel, Orhun Özel, Lea Röller
 # Date   : 23/02/2026
-# Scope  : Growth Accounting Q1 D,E
+# Scope  : Growth Accounting Q1 F,G
 
 rm(list = ls())
 library(data.table) # sorry for the inconvenience:)
@@ -11,4 +11,5 @@ options(print.max = 300, scipen = 50, digits = 2)
 
 
 #### Load data from previous script
+dt         <- readRDS("02_Input/dt_Japan.rds")
 growth_acc <- readRDS("02_Input/growth_acc_Japan.rds")
