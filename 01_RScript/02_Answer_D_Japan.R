@@ -13,3 +13,4 @@ options(print.max = 300, scipen = 50, digits = 2)
 #### Load data from previous script
 dt         <- readRDS("02_Input/dt_Japan.rds")
 growth_acc <- readRDS("02_Input/growth_acc_Japan.rds")
+NACE_codes <- readRDS("02_Input/NACE_codes.rds")
