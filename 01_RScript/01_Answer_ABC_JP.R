@@ -3,10 +3,10 @@
 # Scope  : Growth Accounting
 
 rm(list = ls())
-library(data.table)
+library(data.table)  # sorry for the inconvenience:)
 library(readxl)
 library(writexl)
-library(dplyr) # sorry, I am a dplyr girl;)
+library(dplyr)  # sorry, I am a dplyr girl;)
 options(print.max = 300, scipen = 50, digits = 2)
 
 #### a: Loading the data set ----
