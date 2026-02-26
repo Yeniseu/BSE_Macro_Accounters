@@ -143,7 +143,7 @@ growth_acc[, TFP_contrib_hcpwt := g_y - capital_contrib - g_hcpwt]
 growth_tot <- growth_acc %>% filter (growth_acc$NACE == "TOT")
 write_xlsx(growth_tot, path = "03_Output/Exercise c/c_Japan.xlsx")
 saveRDS(growth_acc, "02_Input/growth_acc_Japan.rds")
-saveRDS(dt        , "02_Input/dt_Japan.rds")
+saveRDS(dt[, -c("y_pw", "y_phw", "y_phw_e")], "02_Input/dt_Japan.rds")
 saveRDS(NACE_codes, "02_Input/NACE_codes.rds")
 
 # Plot ;)
