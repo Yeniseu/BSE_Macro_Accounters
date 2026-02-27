@@ -8,12 +8,13 @@ library(readxl)
 library(writexl)
 library(dplyr) # sorry, I am a dplyr girl;)
 library(kableExtra)
-options(print.max = 300, scipen = 50, digits = 2)
+library(ggplot2)
+library(viridis)
+options(print.max = 300, scipen = 50, digits = 3)
 
 
 #### Load data from previous script
 dt         <- readRDS("02_Input/dt_Japan.rds")
-growth_acc <- readRDS("02_Input/growth_acc_Japan.rds")
 NACE_codes <- readRDS("02_Input/NACE_codes.rds")
 
 #### Select broad NACE sectors
@@ -60,9 +61,10 @@ dt[, TFP_contrib       := g_y - KY_contrib - g_h]
 
 
 #### See Results
-## Add sector importance, as share in the economy's output
+### Add sector importance, as share in the economy's output
 dt[, VA_Q_share := VA_Q/sum(VA_Q, na.rm=T)*100, by=year]
 
+### Tables
 ## Output per Worker Growth Ranking
 table <- dt[, .(mean_g_y = mean(g_y, na.rm=T)*100, share=round(mean(VA_Q_share, na.rm=T),1)), by = nace][order(-mean_g_y)]
 setnames(table, c("nace", "mean_g_y","share"), c("NACE Code", "Output Per Worker Growth (Mean)", "Output Share"))
@@ -78,4 +80,39 @@ caption <- "Average TFP Growth by Sector (Japan, 1995–2015)"
 kbl(table, digits = 4, align ="c", caption = caption) |>
   kable_classic(full_width = F, lightable_options = c("striped", "hover")) |>
   row_spec(0, bold = T)
+
+
+### Charts
+## Output per Worker Growth Ranking
+#Cumulative chart starting from 1995=100
+chart1 <- dt[, .(year, nace, g_y=g_y*100)]
+chart1[, g_y_index :=  1+g_y/100]
+chart1[year==1995, g_y_index := 100]
+chart1[, g_y_index := cumprod(g_y_index), by = nace]
+
+caption <- "Output per Worker Growth by Sector (Japan, 1995=100)"
+ggplot(chart1, aes(x=year, y=g_y_index, color=nace, group=nace)) +
+  geom_line(size = 1) + scale_color_viridis_d(option = "H") +
+  geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
+  labs(title=caption, x="Year", y="Output Per Worker Index", color="NACE") +
+  theme_minimal() + 
+  theme(legend.position = "right", plot.title = element_text(hjust = 0.5, face = "bold"))
+ggsave("03_Output/Exercise d/y_chart_sectoral.png", width=10, height=6)
+
+
+## TFP Growth Ranking
+chart2 <- dt[, .(year, nace, TFP=TFP_contrib*100)]
+chart2[, TFP_index :=  1+TFP/100]
+chart2[year==1995, TFP_index := 100]
+chart2[, TFP_index := cumprod(TFP_index), by = nace]
+
+caption <- "TFP Growth by Sector (Japan, 1995=100)"
+ggplot(chart2, aes(x=year, y=TFP_index, color=nace, group=nace)) +
+  geom_line(size = 1) + scale_color_viridis_d(option = "H") +
+  geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
+  labs(title=caption, x="Year", y="TFP Index", color="NACE") +
+  theme_minimal() + 
+  theme(legend.position = "right", plot.title = element_text(hjust = 0.5, face = "bold"))
+ggsave("03_Output/Exercise d/tfp_chart_sectoral.png", width=10, height=6)
+
 
