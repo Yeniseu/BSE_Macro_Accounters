@@ -7,6 +7,7 @@ library(data.table) # sorry for the inconvenience:)
 library(readxl)
 library(writexl)
 library(dplyr) # sorry, I am a dplyr girl;)
+library(kableExtra)
 options(print.max = 300, scipen = 50, digits = 2)
 
 
