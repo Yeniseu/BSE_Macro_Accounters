@@ -126,13 +126,13 @@ dev.off() # closing the png
 growth_acc <- copy(dt)
 # Compute growth rates (first differences of logs)
 dif1 <- function(x) {x-shift(x)}
-growth_acc[, g_y     := dif1(log(VA_Q     / EMP )), by = nace]
-growth_acc[, g_KY    := dif1(log(Kq_GFCF  / VA_Q)), by = nace]
-growth_acc[, g_h     := dif1(log(Kq_Train / EMP )), by = nace]
-growth_acc[, g_hcpwt := dif1(log(hc_pwt))] # Alternative Human capital from PWT
+growth_acc[, g_y     := dif1(log(VA_Q     / EMP ))*100, by = nace]
+growth_acc[, g_KY    := dif1(log(Kq_GFCF  / VA_Q))*100, by = nace]
+growth_acc[, g_h     := dif1(log(Kq_Train / EMP ))*100, by = nace]
+growth_acc[, g_hcpwt := dif1(log(hc_pwt))*100] # Alternative Human capital from PWT
 
 # Compute contributions
-growth_acc[, capital_contrib   := (1/3)/(2/3) * g_KY]
+growth_acc[, capital_contrib   := 0.5 * g_KY]
 growth_acc[, TFP_contrib       := g_y - capital_contrib - g_h]
 growth_acc[, TFP_contrib_hcpwt := g_y - capital_contrib - g_hcpwt]
 
