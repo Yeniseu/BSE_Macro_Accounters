@@ -41,6 +41,9 @@ dt <- rbind(dt, dt_ou, dt_de)
 dt <- dt[nace %in% NACE_wanted, ]
 setkey(dt, nace, year)
 
+# Export
+saveRDS(dt, "02_Input/dt_sectors_JP.rds")
+
 #### Output per workers and accounting
 #dt[, y_pw  := VA_Q / EMP]
 # Compute growth rates (first differences of logs)

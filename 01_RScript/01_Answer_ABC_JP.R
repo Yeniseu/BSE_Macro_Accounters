@@ -122,16 +122,13 @@ dev.off() # closing the png
 
 
 #### c Growth Accounting ----
-growth_acc <- data.table(
-  NACE = dt$nace[-1],   # remove first row to match diff()
-  Year = dt$year[-1]
-)
-
+growth_acc <- copy(dt)
 # Compute growth rates (first differences of logs)
-growth_acc[, g_y  := diff(log(dt$VA_Q     / dt$EMP ))]
-growth_acc[, g_KY := diff(log(dt$Kq_GFCF  / dt$VA_Q))]
-growth_acc[, g_h  := diff(log(dt$Kq_Train / dt$EMP ))]
-growth_acc[, g_hcpwt := diff(log(dt$hc_pwt))] # Alternative Human capital from PWT
+dif1 <- function(x) {x-shift(x)}
+growth_acc[, g_y     := dif1(log(VA_Q     / EMP )), by = nace]
+growth_acc[, g_KY    := dif1(log(Kq_GFCF  / VA_Q)), by = nace]
+growth_acc[, g_h     := dif1(log(Kq_Train / EMP )), by = nace]
+growth_acc[, g_hcpwt := dif1(log(hc_pwt))] # Alternative Human capital from PWT
 
 # Compute contributions
 growth_acc[, capital_contrib   := (1/3)/(2/3) * g_KY]
@@ -140,34 +137,36 @@ growth_acc[, TFP_contrib_hcpwt := g_y - capital_contrib - g_hcpwt]
 
 
 # Export
-growth_tot <- growth_acc %>% filter (growth_acc$NACE == "TOT")
-write_xlsx(growth_tot, path = "03_Output/Exercise c/c_Japan.xlsx")
+wanted_cols <- c("nace", "year", "g_y", "g_KY", "g_h", "g_hcpwt", "capital_contrib", "TFP_contrib", "TFP_contrib_hcpwt")
+growth_tot <- growth_acc[nace=="TOT", ..wanted_cols]
+write_xlsx(growth_tot, "03_Output/Exercise c/c_Japan.xlsx")
 saveRDS(growth_acc, "02_Input/growth_acc_Japan.rds")
 saveRDS(dt[, -c("y_pw", "y_phw", "y_phw_e")], "02_Input/dt_Japan.rds")
 saveRDS(NACE_codes, "02_Input/NACE_codes.rds")
 
 # Plot ;)
-growth_tot <- growth_tot %>%filter(Year > 1995)
+growth_tot <- growth_tot %>%filter(year > 1995)
 png("03_Output/Exercise c/c_Japan.png", width = 800, height = 600, res = 120) # opening png
-plot(growth_tot$Year, growth_tot$g_y, type = "l", col = "black", lwd = 2,
+plot(growth_tot$year, growth_tot$g_y, type = "l", col = "black", lwd = 2,
      ylim = range(c(growth_tot$g_y, growth_tot$capital_contrib, growth_tot$TFP_contrib, growth_tot$g_h), na.rm = TRUE),
      xlab = "Year", ylab = "Growth rate",
      main = "GDP per worker growth and contributions")
-lines(growth_tot$Year, growth_tot$capital_contrib, col = "purple", lwd = 2)
-lines(growth_tot$Year, growth_tot$TFP_contrib, col = "lightblue", lwd = 2)
-lines(growth_tot$Year, growth_tot$g_h, col = "pink", lwd = 2)
+lines(growth_tot$year, growth_tot$capital_contrib, col = "purple", lwd = 2)
+lines(growth_tot$year, growth_tot$TFP_contrib, col = "lightblue", lwd = 2)
+lines(growth_tot$year, growth_tot$g_h, col = "pink", lwd = 2)
 legend("topright", legend = c("Growth Output per Worker", "Capital contribution", "TFP contribution", "Human Capital Contribution"),
        col = c("black", "purple", "lightblue", "pink"), lwd = 2)
 dev.off() # closing the png
 
 # Plot Alternative (with human capital from PWT)
-plot(growth_tot$Year, growth_tot$g_y, type = "l", col = "black", lwd = 2,
+plot(growth_tot$year, growth_tot$g_y, type = "l", col = "black", lwd = 2,
+     #ylim = range(c(growth_tot$g_y, growth_tot$capital_contrib, growth_tot$TFP_contrib, growth_tot$g_h), na.rm = TRUE),
      ylim = range(c(growth_tot$g_y, growth_tot$capital_contrib, growth_tot$TFP_contrib_hcpwt, growth_tot$g_hcpwt), na.rm = TRUE),
-     xlab = "Year", ylab = "Growth rate",
+     xlab = "year", ylab = "Growth rate",
      main = "GDP per worker growth and contributions")
-lines(growth_tot$Year, growth_tot$capital_contrib, col = "purple", lwd = 2)
-lines(growth_tot$Year, growth_tot$TFP_contrib_hcpwt, col = "lightblue", lwd = 2)
-lines(growth_tot$Year, growth_tot$g_hcpwt, col = "pink", lwd = 2)
+lines(growth_tot$year, growth_tot$capital_contrib, col = "purple", lwd = 2)
+lines(growth_tot$year, growth_tot$TFP_contrib_hcpwt, col = "lightblue", lwd = 2)
+lines(growth_tot$year, growth_tot$g_hcpwt, col = "pink", lwd = 2)
 legend("bottomleft", legend = c("Growth Output per Worker", "Capital contribution", "TFP contribution", "Human Capital Contribution"),
        col = c("black", "purple", "lightblue", "pink"), lwd = 2)
 
