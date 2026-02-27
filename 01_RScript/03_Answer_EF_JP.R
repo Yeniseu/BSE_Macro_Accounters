@@ -7,6 +7,7 @@ library(data.table) # sorry for the inconvenience:)
 library(readxl)
 library(writexl)
 library(dplyr) # sorry, I am a dplyr girl;)
+library(kableExtra)
 options(print.max = 300, scipen = 50, digits = 2)
 
 
@@ -105,3 +106,5 @@ cor(table$`Income per Worker`, table2$`Income per Worker`, use="complete.obs")
 cor(table$`TFP Growth`       , table2$`TFP Growth`       , use="complete.obs")
 cor(table$`Capital Growth`   , table2$`Capital Growth`   , use="complete.obs")
 
+mean(table$`Income per Worker`, na.rm=T)
+mean(table2$`Income per Worker`, na.rm=T)
