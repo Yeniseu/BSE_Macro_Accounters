@@ -159,6 +159,7 @@ legend("topright", legend = c("Growth Output per Worker", "Capital contribution"
 dev.off() # closing the png
 
 # Plot Alternative (with human capital from PWT)
+png("03_Output/Exercise c/c_Japan_hc_PWT.png", width = 800, height = 600, res = 120) # opening png
 plot(growth_tot$year, growth_tot$g_y, type = "l", col = "black", lwd = 2,
      #ylim = range(c(growth_tot$g_y, growth_tot$capital_contrib, growth_tot$TFP_contrib, growth_tot$g_h), na.rm = TRUE),
      ylim = range(c(growth_tot$g_y, growth_tot$capital_contrib, growth_tot$TFP_contrib_hcpwt, growth_tot$g_hcpwt), na.rm = TRUE),
@@ -169,6 +170,6 @@ lines(growth_tot$year, growth_tot$TFP_contrib_hcpwt, col = "lightblue", lwd = 2)
 lines(growth_tot$year, growth_tot$g_hcpwt, col = "pink", lwd = 2)
 legend("bottomleft", legend = c("Growth Output per Worker", "Capital contribution", "TFP contribution", "Human Capital Contribution"),
        col = c("black", "purple", "lightblue", "pink"), lwd = 2)
-
+dev.off() # closing the png
 
 
