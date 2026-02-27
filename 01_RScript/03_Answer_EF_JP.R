@@ -106,3 +106,5 @@ cor(table$`Income per Worker`, table2$`Income per Worker`, use="complete.obs")
 cor(table$`TFP Growth`       , table2$`TFP Growth`       , use="complete.obs")
 cor(table$`Capital Growth`   , table2$`Capital Growth`   , use="complete.obs")
 
+mean(table$`Income per Worker`, na.rm=T)
+mean(table2$`Income per Worker`, na.rm=T)
