@@ -9,6 +9,7 @@ library(writexl)
 library(dplyr)  # sorry, I am a dplyr girl;)
 options(print.max = 300, scipen = 50, digits = 2)
 
+
 #### a: Loading the data set ----
 ### Load & prepare EUKLEM Data
 # Select Japan
