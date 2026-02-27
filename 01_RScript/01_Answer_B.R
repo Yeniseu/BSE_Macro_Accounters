@@ -59,8 +59,12 @@ dt <- merge(dt, pwt, by="year", all.x=T)
 setnames(dt, "hc", "hc_pwt")
 setkey(dt, "nace", "year")
 
+# Export
+saveRDS(dt[, -c("y_pw", "y_phw", "y_phw_e")], "02_Input/dt_Japan.rds")
+saveRDS(NACE_codes, "02_Input/NACE_codes.rds")
 
-#### b: Computing Output per worker ----
+
+#### Question b: Computing Output per worker
 
 ### Aggregate Output per Worker - TOTAL ECONOMY
 # Using number of employees
@@ -119,6 +123,4 @@ plot(dt[nace == "MARKT", year], dt[nace == "MARKT", y_phw_e], type = "l", lwd = 
 mtext("Note: Output per efficient worker calculated using  total hours worked by employees.", side = 1, line = 4, cex = 0.8)
 dev.off() # closing the png
 
-# Export
-saveRDS(dt[, -c("y_pw", "y_phw", "y_phw_e")], "02_Input/dt_Japan.rds")
-saveRDS(NACE_codes, "02_Input/NACE_codes.rds")
+
