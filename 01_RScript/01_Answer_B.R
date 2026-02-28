@@ -9,63 +9,7 @@ library(writexl)
 library(dplyr)  # sorry, I am a dplyr girl;)
 options(print.max = 300, scipen = 50, digits = 2)
 
-
-#### a: Loading the data set ----
-### Load & prepare EUKLEM Data
-# Select Japan
-inp_path    <- "02_Input/JP_national_accounts.xlsx"
-sheet_names <- c("VA_Q", "VA_CP", "EMP", "COMP", "H_EMP", "H_EMPE")
-dt <- data.table(NULL)
-for (i in sheet_names) { # Read every sheet, rowbind them
-  tmp <- read_xlsx(inp_path, sheet = i) |> as.data.table()
-  dt  <- rbind(dt, tmp)
-}
-
-# Adding Human Capital Variables
-inp_path<- "02_Input/JP_intangible_analytical.xlsx"
-sheet_names <- c("K_Train", "Kq_Train")
-for (i in sheet_names) {
-  tmp <- read_xlsx(inp_path, sheet = i) |> as.data.table()
-  dt  <- rbind(dt, tmp, fill = TRUE)  # fill = TRUE allows for different columns
-}
-
-# Adding physical capital 
-inp_path<- "02_Input/JP_capital_accounts.xlsx"
-sheet_names <- c("K_GFCF", "Kq_GFCF")
-for (i in sheet_names) {
-  tmp <- read_xlsx(inp_path, sheet = i) |> as.data.table()
-  dt  <- rbind(dt, tmp, fill = TRUE)  # fill = TRUE allows for different columns
-}
-
-# Melt the data table with relevant columns
-NACE_codes <- unique(dt[, .(geo_name, nace_r2_code, nace_r2_name)])
-dt[, c("geo_code", "geo_name", "nace_r2_name") := NULL]
-dt <- melt(dt, id.vars = c("nace_r2_code", "var"))
-dt <- dcast(dt, "nace_r2_code + variable ~ var")
-setnames(dt, c("nace_r2_code", "variable"), c("nace", "year"))
-setkey(dt, "nace", "year")
-
-# Select years
-dt[, year := as.numeric(as.character(year))]
-dt <- dt[between(year, 1995, 2015)]
-
-
-### Load pwt data for human capital
-pwt_all <- read_xlsx("02_Input/pwt110.xlsx", sheet = "Data") |> as.data.table()
-pwt_all <- pwt_all[between(year, 1995, 2015)]
-pwt     <- pwt_all[country=="Japan", .(year, hc)][]
-# Merge into dt
-dt <- merge(dt, pwt, by="year", all.x=T)
-setnames(dt, "hc", "hc_pwt")
-setkey(dt, "nace", "year")
-
-# Export
-saveRDS(dt[, -c("y_pw", "y_phw", "y_phw_e")], "02_Input/dt_Japan.rds")
-saveRDS(NACE_codes, "02_Input/NACE_codes.rds")
-
-
 #### Question b: Computing Output per worker
-
 ### Aggregate Output per Worker - TOTAL ECONOMY
 # Using number of employees
 png("03_Output/Exercise b/b_Japan_EMP_TOT.png", width = 800, height = 600, res = 120) # opening png 

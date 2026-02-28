@@ -1,7 +1,13 @@
-# Compute Labour Composition (h) 
+# Authors: Ellie Walters, Ece Taşan Özel, Orhun Özel, Lea Röller
+# Date   : 23/02/2026
+# Scope  : Growth Accounting
 
-library(data.table)
+rm(list = ls())
+library(data.table)  # sorry for the inconvenience:)
 library(readxl)
+library(writexl)
+library(dplyr)  # sorry, I am a dplyr girl;)
+options(print.max = 300, scipen = 50, digits = 2)
 
 # 1 - LAB_QI / H_EMP
 
@@ -55,23 +61,6 @@ dt[, g_h     := dif1(log(h))*100, by = nace]
 head(dt, 20)
 
 ####
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
