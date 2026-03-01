@@ -28,7 +28,7 @@ par(mar = c(5, 4, 6, 2))  # Increase top margin
 plot(dt_tot$year, dt_tot$y_pw, 
      type = "l", lwd = 2, lty = 1,
      ylim = y_range,
-     main = "Japan - Output per Worker",
+     # main = "Japan - Output per Worker",
      xlab = "Year", ylab = "Output per Worker")
 
 # Add MARKET
@@ -61,7 +61,7 @@ par(mar = c(5, 4, 6, 2))  # Increase top margin
 plot(dt_tot$year, dt_tot$y_pw, 
      type = "l", lwd = 2, lty = 1,
      ylim = y_range,
-     main = "Japan - Output per Hours Worked",
+    #  main = "Japan - Output per Hours Worked",
      xlab = "Year", ylab = "Output per Hours Worked")
 
 # Add MARKET
@@ -95,7 +95,7 @@ par(mar = c(5, 4, 6, 2))  # Increase top margin
 plot(dt_tot$year, dt_tot$y_pw, 
      type = "l", lwd = 2, lty = 1,
      ylim = y_range,
-     main = "Japan - Output per Hours Worked of Employees",
+    # main = "Japan - Output per Hours Worked of Employees",
      xlab = "Year", ylab = "Output per Hours Worked")
 
 # Add MARKET
@@ -142,7 +142,7 @@ par(mar = c(5, 4, 6, 2))
 plot(dt_tot$year, dt_tot$g_y_pw,
      type = "l", lwd = 2, lty = 1,
      ylim = y_range,
-     main = "Japan - Growth in Output per Worker",
+    # main = "Japan - Growth in Output per Worker",
      xlab = "Year", ylab = "Growth rate (%)")
 
 # Add MARKET
@@ -182,7 +182,7 @@ par(mar = c(5, 4, 6, 2))
 plot(dt_tot$year, dt_tot$g_y_pw,
      type = "l", lwd = 2, lty = 1,
      ylim = y_range,
-     main = "Japan - Growth in Output per Hours Worked",
+    # main = "Japan - Growth in Output per Hours Worked",
      xlab = "Year", ylab = "Growth rate (%)")
 
 # Add MARKET
@@ -222,7 +222,7 @@ par(mar = c(5, 4, 6, 2))
 plot(dt_tot$year, dt_tot$g_y_pw,
      type = "l", lwd = 2, lty = 1,
      ylim = y_range,
-     main = "Japan - Growth in Output per Hours Worked of Employees",
+   #  main = "Japan - Growth in Output per Hours Worked of Employees",
      xlab = "Year", ylab = "Growth rate (%)")
 
 # Add MARKET
