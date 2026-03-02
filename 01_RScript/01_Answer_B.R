@@ -22,7 +22,7 @@ dt[, y_pw := VA_Q / EMP]
 dt_tot    <- dt[nace == "TOT"]
 dt_market <- dt[nace == "MARKT"]
 y_range <- range(c(dt_tot$y_pw, dt_market$y_pw), na.rm = TRUE) # Define common y-axis range
-par(mar = c(5, 4, 6, 2))  # Increase top margin
+# par(mar = c(5, 4, 6, 2))  # Increase top margin
 
 # Plot TOTAL with full y-range
 plot(dt_tot$year, dt_tot$y_pw, 
@@ -55,7 +55,7 @@ dt[, y_pw := VA_Q / H_EMP]
 dt_tot    <- dt[nace == "TOT"]
 dt_market <- dt[nace == "MARKT"]
 y_range <- range(c(dt_tot$y_pw, dt_market$y_pw), na.rm = TRUE) # Define common y-axis range
-par(mar = c(5, 4, 6, 2))  # Increase top margin
+# par(mar = c(5, 4, 6, 2))  # Increase top margin
 
 # Plot TOTAL with full y-range
 plot(dt_tot$year, dt_tot$y_pw, 
@@ -89,7 +89,7 @@ dt[, y_pw := VA_Q / H_EMPE]
 dt_tot    <- dt[nace == "TOT"]
 dt_market <- dt[nace == "MARKT"]
 y_range <- range(c(dt_tot$y_pw, dt_market$y_pw), na.rm = TRUE) # Define common y-axis range
-par(mar = c(5, 4, 6, 2))  # Increase top margin
+# par(mar = c(5, 4, 6, 2))  # Increase top margin
 
 # Plot TOTAL with full y-range
 plot(dt_tot$year, dt_tot$y_pw, 
@@ -136,7 +136,7 @@ dt_market <- dt_growth[nace == "MARKT"]
 
 y_range <- range(c(dt_tot$g_y_pw, dt_market$g_y_pw), na.rm = TRUE) # Common y-axis range
 
-par(mar = c(5, 4, 6, 2))
+# par(mar = c(5, 4, 6, 2))
 
 # Plot TOTAL
 plot(dt_tot$year, dt_tot$g_y_pw,
@@ -176,7 +176,7 @@ dt_market <- dt_growth[nace == "MARKT"]
 
 y_range <- range(c(dt_tot$g_y_pw, dt_market$g_y_pw), na.rm = TRUE) # Common y-axis range
 
-par(mar = c(5, 4, 6, 2))
+# par(mar = c(5, 4, 6, 2))
 
 # Plot TOTAL
 plot(dt_tot$year, dt_tot$g_y_pw,
@@ -216,7 +216,7 @@ dt_market <- dt_growth[nace == "MARKT"]
 
 y_range <- range(c(dt_tot$g_y_pw, dt_market$g_y_pw), na.rm = TRUE) # Common y-axis range
 
-par(mar = c(5, 4, 6, 2))
+# par(mar = c(5, 4, 6, 2))
 
 # Plot TOTAL
 plot(dt_tot$year, dt_tot$g_y_pw,
