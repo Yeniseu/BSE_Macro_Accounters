@@ -9,7 +9,7 @@ library(writexl)
 library(dplyr) # sorry, I am a dplyr girl;)
 library(kableExtra)
 library(ggplot2)
-library(viridis)
+library(viridis) 
 options(print.max = 300, scipen = 50, digits = 4)
 
 #### Load data from previous script
