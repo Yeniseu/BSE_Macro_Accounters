@@ -60,91 +60,31 @@ caption <- "Different Physical Capital Indices Growth Rates (Japan, %)"
 ggplot(chart_compare1, aes(x=year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
   scale_color_viridis_d(option = "H",  name = NULL, labels = c(
-    "g_KY" = "Total Physical Capital",
-    "g_KY_NRes" = "Non-Residential Physical Capital",
-    "g_KY_Tang_NRes" = "Non-Residential Tangible Physical Capital"
+    "g_KY" = "Total K",
+    "g_KY_NRes" = "Non-Res K",
+    "g_KY_Tang_NRes" = "Non-Res Tangible K"
   )) +
   geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Growth Rate (%)", color="") +
   #labs(title=caption, x="Year", y="Growth Rate (%)", color="") +
   theme_minimal() + 
-  theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold",),
+        legend.text  = element_text(size = 8)) 
 ggsave("03_Output/Exercise c/Physical_capital/chart_compare1.png", width=4, height=3)
-
-chart_compare2 <- growth_tot[variable %in% c("g_hcpwt", "g_h_lc")]
-caption <- "Different Human Capital Indices Growth Rates (Japan, %)"
-ggplot(chart_compare2, aes(x=year, y=value, color=variable, group=variable)) +
-  geom_line(size = 1) + 
-  scale_color_viridis_d(option = "H",  name = NULL, labels = c(
-    "g_hcpwt" = "PWT HC",
-    "g_h_lc" = "Labor Composition HC"
-  )) +
-  geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
-  labs(x="Year", y="Growth Rate (%)", color="") +
-  #labs(title=caption, x="Year", y="Growth Rate (%)", color="") +
-  theme_minimal() + 
-  theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
-ggsave("03_Output/Exercise c/chart_compare2.png", width=4, height=3)
-
-
-
-
-
 
 
 #### Plot  Growth Accounting
-### Growth Accounting 1: Train HC
-chart_acc1 <- growth_tot[variable %in% c("g_y", "capital_contr", "TFP_contr", "g_h")]
+### Growth Accounting 1: Total K
+chart_acc1 <- growth_tot[variable %in% c("g_y", "capital_contr", "TFP_contr_hlc", "g_h_lc")]
 caption <- "GDP Per Worker Growth and Contributions (Japan)"
 ggplot(chart_acc1, aes(x=year, y=value, color=variable, group=variable)) +
-  geom_line(size = 1) + 
-  scale_color_manual(name = NULL, guide = guide_legend(nrow = 2),
-                     values = c("g_y" = "#000000", "capital_contr"="#800080", "TFP_contr"="#ADD8E6", "g_h"="#FFC0CB"),
-                     labels = c(
-                       "g_y" = "Output Per Worker",
-                       "capital_contr" = "Capital Contr.",
-                       "TFP_contr" = "TFP Contr.",
-                       "g_h" = "Human Capital Contr."
-                     )) +
-  geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
-  labs(x="Year", y="Points") +
-  #labs(title=caption, x="Year", y="Output Per Worker Index") +
-  theme_minimal() + 
-  theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
-ggsave("03_Output/Exercise c/Gr_Acc_Tr.png", width=4, height=3)
-
-
-### Growth Accounting 2: PWT HC
-chart_acc2 <- growth_tot[variable %in% c("g_y", "capital_contr", "TFP_contr_hcpwt", "g_hcpwt")]
-caption <- "GDP Per Worker Growth and Contributions (Japan)"
-ggplot(chart_acc2, aes(x=year, y=value, color=variable, group=variable)) +
-  geom_line(size = 1) + 
-  scale_color_manual(name = NULL, guide = guide_legend(nrow = 2),
-                     values = c("g_y" = "#000000", "capital_contr"="#800080", "TFP_contr_hcpwt"="#ADD8E6", "g_hcpwt"="#FFC0CB"),
-                     labels = c(
-                       "g_y" = "Output Per Worker",
-                       "capital_contr" = "Capital Contr.",
-                       "TFP_contr_hcpwt" = "TFP Contr.",
-                       "g_hcpwt" = "Human Capital Contr."
-                     )) +
-  geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
-  labs(x="Year", y="Points") +
-  #labs(title=caption, x="Year", y="Output Per Worker Index") +
-  theme_minimal() + 
-  theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
-ggsave("03_Output/Exercise c/Gr_Acc_PWT.png", width=4, height=3)
-
-
-### Growth Accounting 3: Labor Composition HC
-chart_acc3 <- growth_tot[variable %in% c("g_y", "capital_contr", "TFP_contr_hlc", "g_h_lc")]
-caption <- "GDP Per Worker Growth and Contributions (Japan)"
-ggplot(chart_acc3, aes(x=year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
   scale_color_manual(name = NULL, guide = guide_legend(nrow = 2),
                      values = c("g_y" = "#000000", "capital_contr"="#800080", "TFP_contr_hlc"="#ADD8E6", "g_h_lc"="#FFC0CB"),
                      labels = c(
                        "g_y" = "Output Per Worker",
-                       "capital_contr" = "Capital Contr.",
+                       "capital_contr" = "Capital Contr. (Total K)",
                        "TFP_contr_hlc" = "TFP Contr.",
                        "g_h_lc" = "Human Capital Contr."
                      )) +
@@ -153,7 +93,50 @@ ggplot(chart_acc3, aes(x=year, y=value, color=variable, group=variable)) +
   #labs(title=caption, x="Year", y="Output Per Worker Index") +
   theme_minimal() + 
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
-ggsave("03_Output/Exercise c/Gr_Acc_LC.png", width=4, height=3)
+ggsave("03_Output/Exercise c/Physical_capital/Gr_Acc_Total_K.png", width=4, height=3)
+
+
+### Growth Accounting 2: Non-Res K
+chart_acc2 <- growth_tot[variable %in% c("g_y", "capital_contr_Nres", "TFP_contr_NRes", "g_h_lc")]
+caption <- "GDP Per Worker Growth and Contributions (Japan)"
+ggplot(chart_acc2, aes(x=year, y=value, color=variable, group=variable)) +
+  geom_line(size = 1) + 
+  scale_color_manual(name = NULL, guide = guide_legend(nrow = 2),
+                     values = c("g_y" = "#000000", "capital_contr_Nres"="#800080", "TFP_contr_NRes"="#ADD8E6", "g_h_lc"="#FFC0CB"),
+                     labels = c(
+                       "g_y" = "Output Per Worker",
+                       "capital_contr_Nres" = "Capital Contr. (Non_Res. K)",
+                       "TFP_contr_NRes" = "TFP Contr.",
+                       "g_h_lc" = "Human Capital Contr."
+                     )) +
+  geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
+  labs(x="Year", y="Points") +
+  #labs(title=caption, x="Year", y="Output Per Worker Index") +
+  theme_minimal() + 
+  theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
+ggsave("03_Output/Exercise c/Physical_capital/Gr_Acc_NRes_K.png", width=4, height=3)
+
+
+### Growth Accounting 3: Non-Res Tangible K
+chart_acc3 <- growth_tot[variable %in% c("g_y", "capital_contr_Tang_Nres", "TFP_contr_Tang_NRes", "g_h_lc")]
+caption <- "GDP Per Worker Growth and Contributions (Japan)"
+ggplot(chart_acc3, aes(x=year, y=value, color=variable, group=variable)) +
+  geom_line(size = 1) + 
+  scale_color_manual(name = NULL, guide = guide_legend(nrow = 2),
+                     values = c("g_y" = "#000000", "capital_contr_Tang_Nres"="#800080", "TFP_contr_Tang_NRes"="#ADD8E6", "g_h_lc"="#FFC0CB"),
+                     labels = c(
+                       "g_y" = "Output Per Worker",
+                       "capital_contr_Tang_Nres" = "Capital Contr. (Non-Res. Tangible K)",
+                       "TFP_contr_Tang_NRes" = "TFP Contr.",
+                       "g_h_lc" = "Human Capital Contr."
+                     )) +
+  geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
+  labs(x="Year", y="Points") +
+  #labs(title=caption, x="Year", y="Output Per Worker Index") +
+  theme_minimal() + 
+  theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
+ggsave("03_Output/Exercise c/Physical_capital/Gr_Acc_Tang_Nres.png", width=4, height=3)
+
 
 
 
@@ -162,66 +145,74 @@ ggsave("03_Output/Exercise c/Gr_Acc_LC.png", width=4, height=3)
 
 
 #### Cumulative charts starting from 1995=100
-chart_cum <- growth_short[, .(year, g_y, capital_contr, TFP_contr_hcpwt, g_hcpwt, 
-                              TFP_contr,  g_h, g_h_lc, TFP_contr_hlc)]
+chart_cum <- growth_short[, .(year, g_y, g_h_lc, TFP_contr_hlc, capital_contr,
+                              capital_contr_Nres, capital_contr_Tang_Nres,
+                              TFP_contr_NRes, TFP_contr_Tang_NRes
+                              )]
 col_names <- setdiff(names(chart_cum), "year")
 chart_cum[, (col_names) := lapply(.SD, function(x) 1+x/100), .SDcols = col_names]
 chart_cum[year == 1995, eval(col_names) := 100]
 chart_cum[, (col_names) := lapply(.SD, function(x) cumprod(x)), .SDcols = col_names]
 chart_cum <- melt(chart_cum, id.vars = "year")
 
-### Growth Accounting 1: Train HC
-chart_cum1 <- chart_cum[variable %in% c("g_y", "capital_contr", "TFP_contr", "g_h")]
+### Growth Accounting 1: Total K
+chart_cum1 <- chart_cum[variable %in% c("g_y", "capital_contr", "TFP_contr_hlc", "g_h_lc")]
 caption <- "Output Per Worker Growth by Sector (Japan, 1995=100)"
 ggplot(chart_cum1, aes(x=year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
-  scale_color_viridis_d(option = "H",  name = NULL,  guide = guide_legend(nrow = 2), labels = c(
-    "g_y" = "Output Per Worker",
-    "capital_contr" = "Capital Contr.",
-    "TFP_contr" = "TFP Contr.",
-    "g_h" = "Human Capital Contr."
-  )) +
+  scale_color_manual(name = NULL,  guide = guide_legend(nrow = 2),
+                     values = c("g_y" = "#2c003e", "capital_contr"="#00c896", "TFP_contr_hlc"="#f0a202", "g_h_lc"="#8b0000"),
+                     labels = c(
+                       "g_y" = "Output Per Worker",
+                       "capital_contr" = "Capital Contr. (Total K)",
+                       "TFP_contr_hlc" = "TFP Contr.",
+                       "g_h_lc" = "Human Capital Contr."
+                     )) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Index Value", color="") +
   #labs(title=caption, x="Year", y="Output Per Worker Index", color="") +
   theme_minimal() + 
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
-ggsave("03_Output/Exercise c/Growth_Acc_Cumulative_Tr.png", width=4, height=3)
+ggsave("03_Output/Exercise c/Physical_capital/Growth_Acc_Cum_Total_K.png", width=4, height=3)
 
-# Plot Cumulative 2 (with human capital from PWT)
-chart_cum2 <- chart_cum[variable %in% c("g_y", "capital_contr", "TFP_contr_hcpwt", "g_hcpwt")]
+# Plot Cumulative 2 : Non-Res K
+chart_cum2 <- chart_cum[variable %in% c("g_y", "capital_contr_Nres", "TFP_contr_NRes", "g_h_lc")]
 caption <- "GDP Per Worker and Contributions (Japan, 1995=100)"
 ggplot(chart_cum2, aes(x=year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
-  scale_color_viridis_d(option = "H",  name = NULL,  guide = guide_legend(nrow = 2), labels = c(
-    "g_y" = "Output Per Worker",
-    "capital_contr" = "Capital Contr.",
-    "TFP_contr_hcpwt" = "TFP Contr.",
-    "g_hcpwt" = "Human Capital Contr."
-  )) +
+  scale_color_manual(name = NULL,  guide = guide_legend(nrow = 2),
+                     values = c("g_y" = "#2c003e", "capital_contr_Nres"="#00c896", "TFP_contr_NRes"="#f0a202", "g_h_lc"="#8b0000"),
+                     labels = c(
+                       "g_y" = "Output Per Worker",
+                       "capital_contr_Nres" = "Capital Contr. (Non_Res. K)",
+                       "TFP_contr_NRes" = "TFP Contr.",
+                       "g_h_lc" = "Human Capital Contr."
+                     )) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Index Value", color="") +
   #labs(title=caption, x="Year", y="Output Per Worker Index", color="") +
   theme_minimal() + 
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
-ggsave("03_Output/Exercise c/Growth_Acc_Cumulative_PWT.png", width=4, height=3)
+ggsave("03_Output/Exercise c/Physical_capital/Growth_Acc_Cum_NRes_K.png", width=4, height=3)
 
-# Plot Cumulative 3 (hlc, human capital labor compositiob)
-chart_cum3 <- chart_cum[variable %in% c("g_y", "capital_contr", "TFP_contr_hlc", "g_h_lc")]
+
+# Plot Cumulative 3: Non-Res Tangible K
+chart_cum3 <- chart_cum[variable %in% c("g_y", "capital_contr_Tang_Nres", "TFP_contr_Tang_NRes", "g_h_lc")]
 caption <- "GDP Per Worker and Contributions (Japan, 1995=100)"
 ggplot(chart_cum3, aes(x=year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
-  scale_color_viridis_d(option = "H",  name = NULL,  guide = guide_legend(nrow = 2), labels = c(
-    "g_y" = "Output Per Worker",
-    "capital_contr" = "Capital Contr.",
-    "TFP_contr_hlc" = "TFP Contr.",
-    "g_h_lc" = "Human Capital Contr."
+  scale_color_manual(name = NULL,  guide = guide_legend(nrow = 2),
+                        values = c("g_y" = "#2c003e", "capital_contr_Tang_Nres"="#00c896", "TFP_contr_Tang_NRes"="#f0a202", "g_h_lc"="#8b0000"),
+                        labels = c(
+                          "g_y" = "Output Per Worker",
+                          "capital_contr_Tang_Nres" = "Capital Contr. (Non-Res. Tangible K)",
+                          "TFP_contr_Tang_NRes" = "TFP Contr.",
+                          "g_h_lc" = "Human Capital Contr."
   )) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Index Value", color="") +
   #labs(title=caption, x="Year", y="Index", color="") +
   theme_minimal() + 
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
-ggsave("03_Output/Exercise c/Growth_Acc_Cumulative_LC.png", width=4, height=3)
-
+ggsave("03_Output/Exercise c/Physical_capital/Growth_Acc_Cumu_NRes_Tang_K.png", width=4, height=3)
 
