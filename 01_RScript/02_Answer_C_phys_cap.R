@@ -105,7 +105,7 @@ ggplot(chart_acc2, aes(x=year, y=value, color=variable, group=variable)) +
                      values = c("g_y" = "#000000", "capital_contr_Nres"="#800080", "TFP_contr_NRes"="#ADD8E6", "g_h_lc"="#FFC0CB"),
                      labels = c(
                        "g_y" = "Output Per Worker",
-                       "capital_contr_Nres" = "Capital Contr. (Non_Res. K)",
+                       "capital_contr_Nres" = "Capital Contr. (NRes K)",
                        "TFP_contr_NRes" = "TFP Contr.",
                        "g_h_lc" = "Human Capital Contr."
                      )) +
@@ -126,7 +126,7 @@ ggplot(chart_acc3, aes(x=year, y=value, color=variable, group=variable)) +
                      values = c("g_y" = "#000000", "capital_contr_Tang_Nres"="#800080", "TFP_contr_Tang_NRes"="#ADD8E6", "g_h_lc"="#FFC0CB"),
                      labels = c(
                        "g_y" = "Output Per Worker",
-                       "capital_contr_Tang_Nres" = "Capital Contr. (Non-Res. Tangible K)",
+                       "capital_contr_Tang_Nres" = "Capital Contr. (NRes Tang K)",
                        "TFP_contr_Tang_NRes" = "TFP Contr.",
                        "g_h_lc" = "Human Capital Contr."
                      )) +
@@ -184,7 +184,7 @@ ggplot(chart_cum2, aes(x=year, y=value, color=variable, group=variable)) +
                      values = c("g_y" = "#2c003e", "capital_contr_Nres"="#00c896", "TFP_contr_NRes"="#f0a202", "g_h_lc"="#8b0000"),
                      labels = c(
                        "g_y" = "Output Per Worker",
-                       "capital_contr_Nres" = "Capital Contr. (Non_Res. K)",
+                       "capital_contr_Nres" = "Capital Contr. (NRes K)",
                        "TFP_contr_NRes" = "TFP Contr.",
                        "g_h_lc" = "Human Capital Contr."
                      )) +
@@ -205,7 +205,7 @@ ggplot(chart_cum3, aes(x=year, y=value, color=variable, group=variable)) +
                         values = c("g_y" = "#2c003e", "capital_contr_Tang_Nres"="#00c896", "TFP_contr_Tang_NRes"="#f0a202", "g_h_lc"="#8b0000"),
                         labels = c(
                           "g_y" = "Output Per Worker",
-                          "capital_contr_Tang_Nres" = "Capital Contr. (Non-Res. Tangible K)",
+                          "capital_contr_Tang_Nres" = "Capital Contr. (NRes Tang K)",
                           "TFP_contr_Tang_NRes" = "TFP Contr.",
                           "g_h_lc" = "Human Capital Contr."
   )) +
