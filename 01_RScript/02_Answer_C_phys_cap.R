@@ -39,34 +39,37 @@ growth_acc[, capital_contr_Tang_Nres  := 0.5 * g_KY_Tang_NRes]
 growth_acc[, TFP_contr_Tang_NRes      := g_y - capital_contr_Tang_Nres - g_h_lc]
 
 # Export
-wanted_cols <- c("nace", "year", "g_y", "g_KY", "g_h", "g_hcpwt", "g_h_lc", "capital_contr", 
-                 "TFP_contr", "TFP_contr_hcpwt", "TFP_contr_hlc")
+wanted_cols <- c("nace", "year", "g_y", "g_KY", "g_h", "g_hcpwt", "g_h_lc",
+                 "capital_contr", "TFP_contr", "TFP_contr_hcpwt", "TFP_contr_hlc",
+                 "g_KY_NRes", "g_KY_Tang_NRes", "capital_contr_Nres", 
+                 "TFP_contr_NRes", "capital_contr_Tang_Nres", "TFP_contr_Tang_NRes")
 growth_short <- growth_acc[nace=="TOT", ..wanted_cols]
 #write_xlsx(growth_tot, "03_Output/Exercise c/c_Japan.xlsx")
 
 # Plot ;)
 # Compare the different indicators' line charts 
 growth_tot <- growth_short[year > 1995, ]
-growth_tot <- growth_tot[, .(year, g_y, capital_contr, TFP_contr_hcpwt, g_hcpwt, 
-                             TFP_contr,  g_h, g_h_lc, TFP_contr_hlc)]
+#growth_tot <- growth_tot[, .(year, g_y, capital_contr, TFP_contr_hcpwt, g_hcpwt, 
+#                             TFP_contr,  g_h, g_h_lc, TFP_contr_hlc)]
+growth_tot <- growth_tot[, nace := NULL]
 growth_tot <- melt(growth_tot, id.vars = "year")
 
 growth_short
-chart_compare1 <- growth_tot[variable %in% c("g_h", "g_hcpwt", "g_h_lc")]
-caption <- "Different Human Capital Indices Growth Rates (Japan, %)"
+chart_compare1 <- growth_tot[variable %in% c("g_KY", "g_KY_NRes", "g_KY_Tang_NRes")]
+caption <- "Different Physical Capital Indices Growth Rates (Japan, %)"
 ggplot(chart_compare1, aes(x=year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
   scale_color_viridis_d(option = "H",  name = NULL, labels = c(
-    "g_h" = "Training HC",
-    "g_hcpwt" = "PWT HC",
-    "g_h_lc" = "Labor Composition HC"
+    "g_KY" = "Total Physical Capital",
+    "g_KY_NRes" = "Non-Residential Physical Capital",
+    "g_KY_Tang_NRes" = "Non-Residential Tangible Physical Capital"
   )) +
   geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Growth Rate (%)", color="") +
   #labs(title=caption, x="Year", y="Growth Rate (%)", color="") +
   theme_minimal() + 
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
-ggsave("03_Output/Exercise c/chart_compare1.png", width=4, height=3)
+ggsave("03_Output/Exercise c/Physical_capital/chart_compare1.png", width=4, height=3)
 
 chart_compare2 <- growth_tot[variable %in% c("g_hcpwt", "g_h_lc")]
 caption <- "Different Human Capital Indices Growth Rates (Japan, %)"
