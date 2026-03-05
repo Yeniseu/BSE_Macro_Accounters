@@ -30,9 +30,9 @@ dt[, alpha := 1 - mean(L_share, na.rm=T), by = "nace"]
 ### Look into all economy for sanity check
 dt_all         <- readRDS("02_Input/dt_Japan.rds")
 dt_all[, L_share := COMP / VA_CP]
-dt_all[nace=="TOT"]  # Sanity Check
+dt_all[nace=="TOT", mean(L_share)]  # Sanity Check
 dt_all[, L_share := (COMP + (COMP / H_EMPE) * (H_EMP - H_EMPE)) / VA_CP] 
-dt_all[nace=="TOT"]  # Sanity Check
+dt_all[nace=="TOT", mean(L_share)]  # Sanity Check
 dt_all[, alpha := 1 - mean(L_share, na.rm=T), by = "nace"]
 
 #### Old sector codes, repeat
@@ -136,21 +136,25 @@ kbl(table[Year>1995,], digits = 4, align ="c", caption = caption) |>
 dt_tot <- dt_all[nace == "TOT"]
 dt_tot[, g_y  := dif1(log(VA_Q     / EMP )), by = nace]
 dt_tot[, g_KY := dif1(log(Kq_GFCF  / VA_Q)), by = nace]
-dt_tot[, g_h  := dif1(log(Kq_Train / EMP )), by = nace]
+dt_tot[, h_lc    := LAB_QI / H_EMP]
+dt_tot[, g_h_lc  := dif1(log(h_lc)), by = nace]
 dt_tot[, g_K := dif1(log(Kq_GFCF)), by = nace]
-#dt_tot[, g_hcpwt := dif1(log(hc_pwt)), by = nace] # if Kq_Train is unknown, input aggregate g_h
-dt_tot[is.nan(g_h), g_h := g_hcpwt]
+
 # Compute contributions
 dt_tot[, KY_contrib   := (alpha)/(1-alpha) * g_KY]
-dt_tot[, TFP_contrib  := g_y - KY_contrib - g_h]
+dt_tot[, TFP_contrib  := g_y - KY_contrib - g_h_lc]
 table2 <- dt_tot[, .(g_y_aggreg  = g_y        *100,
                     TFP_aggreg  = TFP_contrib*100,
                     g_KY_aggreg = g_K        *100), by=year]
 table2 <- table2[, lapply(.SD, round, 2)]
 setnames(table2, c("year", "g_y_aggreg", "TFP_aggreg","g_KY_aggreg"),
                 c("Year", "Income per Worker", "TFP Growth","Capital Growth"))
+caption <- "Growth in Income per Worker, TFP and Capital From the Sectoral Data"
+kbl(table[Year>1995,] , digits = 1, align ="c", caption = caption) |>
+  kable_classic(full_width = F, lightable_options = c("striped", "hover")) |>
+  row_spec(0, bold = T)
 caption <- "Growth in Income per Worker, TFP and Capital From the Total Data"
-kbl(table2[Year>1995,], digits = 4, align ="c", caption = caption) |>
+kbl(table2[Year>1995,], digits = 1, align ="c", caption = caption) |>
   kable_classic(full_width = F, lightable_options = c("striped", "hover")) |>
   row_spec(0, bold = T)
 
@@ -170,7 +174,7 @@ ggplot(IPW[Year>1995], aes(x=Year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
   scale_color_viridis_d(option = "H",  name = NULL) +
   geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
-  labs(x="Year", y="Points") +
+  labs(x="Year", y="IPW Growth (%)") +
   #labs(title=caption, x="Year", y="Output Per Worker Index") +
   theme_minimal() + 
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
@@ -184,7 +188,7 @@ ggplot(TFP[Year>1995], aes(x=Year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
   scale_color_viridis_d(option = "H",  name = NULL) +
   geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
-  labs(x="Year", y="Points") +
+  labs(x="Year", y="TFP Growth (%)") +
   #labs(title=caption, x="Year", y="Output Per Worker Index") +
   theme_minimal() + 
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
@@ -197,7 +201,7 @@ ggplot(K[Year>1995], aes(x=Year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
   scale_color_viridis_d(option = "H",  name = NULL) +
   geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
-  labs(x="Year", y="Points") +
+  labs(x="Year", y="K Growth (%)") +
   #labs(title=caption, x="Year", y="Output Per Worker Index") +
   theme_minimal() + 
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))

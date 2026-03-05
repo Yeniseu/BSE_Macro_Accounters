@@ -22,6 +22,7 @@ dt[, unique(nace)]
 NACE_wanted <- c("A", "B", "C", "D-E", "F", "G", "H", "I", "J", "K", "L", "M-N", "O-U")
 # We don't have O-U, calculate it by summing or averaging sectors from O to U
 dt_ou <- dt[nace %in% c("O-Q","RS","T", "U"), ]
+setnafill(dt_ou, fill=100, cols = "LAB_QI")
 dt_ou[, nace := "O-U"]
 summable   <- setdiff(names(dt_ou), c("nace", "year", "hc_pwt"))
 averageble <- c("hc_pwt")
@@ -51,13 +52,12 @@ saveRDS(dt, "02_Input/dt_sectors_JP.rds")
 dif1 <- function(x) {x-shift(x)}
 dt[, g_y  := dif1(log(VA_Q     / EMP )), by = nace]
 dt[, g_KY := dif1(log(Kq_GFCF  / VA_Q)), by = nace]
-dt[, g_h  := dif1(log(Kq_Train / EMP )), by = nace]
-dt[, g_hcpwt := dif1(log(hc_pwt)), by = nace] # if Kq_Train is unknown, input aggregate g_h
-dt[is.nan(g_h), g_h := g_hcpwt]
+dt[, h_lc    := LAB_QI / H_EMP]
+dt[, g_h_lc  := dif1(log(h_lc)), by = nace]
 
 # Compute contributions
 dt[, KY_contrib   := (1/3)/(2/3) * g_KY]
-dt[, TFP_contrib       := g_y - KY_contrib - g_h]
+dt[, TFP_contrib       := g_y - KY_contrib - g_h_lc]
 
 
 #### See Results
@@ -72,6 +72,7 @@ caption <- "Average Output per Worker Growth by Sector (Japan, 1995–2015, Aver
 kbl(table, digits = 1, align ="c", caption = caption) |>
   kable_classic(full_width = F, lightable_options = c("striped", "hover")) |>
   row_spec(0, bold = T)
+
 
 ## TFP Growth Ranking
 table <- dt[, .(mean_tfp_y = mean(TFP_contrib, na.rm=T)*100, share=round(mean(VA_Q_share, na.rm=T),1)), by = nace][order(-mean_tfp_y)]
