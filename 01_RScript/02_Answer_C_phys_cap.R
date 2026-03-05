@@ -86,7 +86,7 @@ ggplot(chart_acc1, aes(x=year, y=value, color=variable, group=variable)) +
                        "g_y" = "Output Per Worker",
                        "capital_contr" = "Capital Contr. (Total K)",
                        "TFP_contr_hlc" = "TFP Contr.",
-                       "g_h_lc" = "Human Capital (Labor Comp.) Contr."
+                       "g_h_lc" = "Human Capital Contr."
                      )) +
   geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Points") +
@@ -107,7 +107,7 @@ ggplot(chart_acc2, aes(x=year, y=value, color=variable, group=variable)) +
                        "g_y" = "Output Per Worker",
                        "capital_contr_Nres" = "Capital Contr. (Non_Res. K)",
                        "TFP_contr_NRes" = "TFP Contr.",
-                       "g_h_lc" = "Human Capital (Labor Comp.) Contr."
+                       "g_h_lc" = "Human Capital Contr."
                      )) +
   geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Points") +
@@ -128,7 +128,7 @@ ggplot(chart_acc3, aes(x=year, y=value, color=variable, group=variable)) +
                        "g_y" = "Output Per Worker",
                        "capital_contr_Tang_Nres" = "Capital Contr. (Non-Res. Tangible K)",
                        "TFP_contr_Tang_NRes" = "TFP Contr.",
-                       "g_h_lc" = "Human Capital (Labor Comp.) Contr."
+                       "g_h_lc" = "Human Capital Contr."
                      )) +
   geom_hline(yintercept = 0, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Points") +
@@ -166,7 +166,7 @@ ggplot(chart_cum1, aes(x=year, y=value, color=variable, group=variable)) +
                        "g_y" = "Output Per Worker",
                        "capital_contr" = "Capital Contr. (Total K)",
                        "TFP_contr_hlc" = "TFP Contr.",
-                       "g_h_lc" = "Human Capital (Labor Comp.) Contr."
+                       "g_h_lc" = "Human Capital Contr."
                      )) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Index Value", color="") +
@@ -186,7 +186,7 @@ ggplot(chart_cum2, aes(x=year, y=value, color=variable, group=variable)) +
                        "g_y" = "Output Per Worker",
                        "capital_contr_Nres" = "Capital Contr. (Non_Res. K)",
                        "TFP_contr_NRes" = "TFP Contr.",
-                       "g_h_lc" = "Human Capital (Labor Comp.) Contr."
+                       "g_h_lc" = "Human Capital Contr."
                      )) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Index Value", color="") +
@@ -207,7 +207,7 @@ ggplot(chart_cum3, aes(x=year, y=value, color=variable, group=variable)) +
                           "g_y" = "Output Per Worker",
                           "capital_contr_Tang_Nres" = "Capital Contr. (Non-Res. Tangible K)",
                           "TFP_contr_Tang_NRes" = "TFP Contr.",
-                          "g_h_lc" = "Human Capital (Labor Comp.) Contr."
+                          "g_h_lc" = "Human Capital Contr."
   )) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Index Value", color="") +
