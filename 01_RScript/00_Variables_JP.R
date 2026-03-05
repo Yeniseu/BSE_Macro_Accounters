@@ -93,8 +93,8 @@ colnames(dt)
 
 var_list <- c("IT", "CT", "Soft_DB", "TraEq", "OMach", "OCon", "Rstruc", 
               "Cult", "RD", "OIPP", "GFCF")
-nominal_list <- c("Kq_IT", "Kq_CT", "Kq_Soft_DB", "Kq_TraEq", "Kq_OMach",
-                  "Kq_OCon", "Kq_Rstruc", "Kq_Cult", "Kq_RD", "Kq_OIPP")
+nominal_list <- c("K_IT", "K_CT", "K_Soft_DB", "K_TraEq", "K_OMach",
+                  "K_OCon", "K_Rstruc", "K_Cult", "K_RD", "K_OIPP")
 
 # Sum nominal subitems and check if you found K_GFCF
 dt[, K_GFCF_summed := rowSums(.SD), .SDcols = nominal_list]
@@ -108,17 +108,13 @@ dt[, difference := NULL]
 
 setnafill(dt, fill = 0, cols = setdiff(names(dt), "nace"))
 
-dt[, K_Tang := K_GFCF - K_Soft_DB - K_RD - K_OIPP]
-dt[, Kq_Tang := K_Tang / Ip_GFCF]
+# Non-residential total capital stock 
+dt[, K_GFCF_NRes := K_GFCF - K_Rstruc]
+dt[, Kq_GFCF_NRes := K_GFCF_NRes / Ip_GFCF  *100]
 
-dt[, K_Tang := K_GFCF - K_Rstruc]
-dt[, Kq_Tang := K_Tang / Ip_GFCF]
-
-
-
-#TODO compute narrow definitions
-#TODO divide them by the price indices. 
-#TODO plug those in the c part. 
+# Non-residential tangible capital stock 
+dt[, K_Tang_NRes := K_GFCF - K_Soft_DB - K_RD - K_OIPP - K_Rstruc]
+dt[, Kq_Tang_NRes := K_Tang_NRes / Ip_GFCF *100]
 
 
 
