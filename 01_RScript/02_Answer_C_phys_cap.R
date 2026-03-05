@@ -38,7 +38,6 @@ growth_acc[, TFP_contr_NRes           := g_y - capital_contr_Nres - g_h_lc]
 growth_acc[, capital_contr_Tang_Nres  := 0.5 * g_KY_Tang_NRes]
 growth_acc[, TFP_contr_Tang_NRes      := g_y - capital_contr_Tang_Nres - g_h_lc]
 
-
 # Export
 wanted_cols <- c("nace", "year", "g_y", "g_KY", "g_h", "g_hcpwt", "g_h_lc", "capital_contr", 
                  "TFP_contr", "TFP_contr_hcpwt", "TFP_contr_hlc")
