@@ -89,15 +89,36 @@ dt <- dt[between(year, 1995, 2015)]
 
 colnames(dt)
 
-# Compute 
+# Compute Different Capital Stock Measures
+
 var_list <- c("IT", "CT", "Soft_DB", "TraEq", "OMach", "OCon", "Rstruc", 
               "Cult", "RD", "OIPP", "GFCF")
+nominal_list <- c("Kq_IT", "Kq_CT", "Kq_Soft_DB", "Kq_TraEq", "Kq_OMach",
+                  "Kq_OCon", "Kq_Rstruc", "Kq_Cult", "Kq_RD", "Kq_OIPP")
+
+# Sum nominal subitems and check if you found K_GFCF
+dt[, K_GFCF_summed := rowSums(.SD), .SDcols = nominal_list]
+dt[1:20, .(K_GFCF_summed,  K_GFCF)]
+dt[, difference := (K_GFCF_summed - K_GFCF) / K_GFCF_summed]
+mean(dt[, difference], na.rm = T)
+dt[, K_GFCF_summed := NULL]
+dt[, difference := NULL]
+
+# Compute Different Capital Stock Measures
+
+setnafill(dt, fill = 0, cols = setdiff(names(dt), "nace"))
+
+dt[, K_Tang := K_GFCF - K_Soft_DB - K_RD - K_OIPP]
+dt[, Kq_Tang := K_Tang / Ip_GFCF]
+
+dt[, K_Tang := K_GFCF - K_Rstruc]
+dt[, Kq_Tang := K_Tang / Ip_GFCF]
 
 
 
-
-
-
+#TODO compute narrow definitions
+#TODO divide them by the price indices. 
+#TODO plug those in the c part. 
 
 
 
