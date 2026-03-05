@@ -71,6 +71,74 @@ dt <- merge(dt, pwt, by="year", all.x=T)
 setnames(dt, "hc", "hc_pwt")
 setkey(dt, "nace", "year")
 
+## Adding physical capital 
+
+
+# 2 - CAPITAL
+
+### Load & prepare EUKLEM Data
+# Capital Accounts
+inp_path    <- "02_Input/JP_capital_accounts.xlsx"
+sheet_names <- c("Ip_IT", "Ip_CT", "Ip_Soft_DB", "Ip_TraEq", "Ip_OMach",
+                 "Ip_OCon", "Ip_Rstruc", "Ip_Cult", "Ip_RD", "Ip_OIPP",
+                 "Ip_GFCF", "K_IT", "K_CT", "K_Soft_DB", "K_TraEq", "K_OMach",
+                 "K_OCon", "K_Rstruc", "K_Cult", "K_RD", "K_OIPP", "K_GFCF",
+                 "Kq_IT", "Kq_CT", "Kq_Soft_DB", "Kq_TraEq", "Kq_OMach",
+                 "Kq_OCon", "Kq_Rstruc", "Kq_Cult", "Kq_RD", "Kq_OIPP", 
+                 "Kq_GFCF")
+dt_cap <- data.table(NULL)
+for (i in sheet_names) { # Read every sheet, rowbind them
+  tmp <- read_xlsx(inp_path, sheet = i) |> as.data.table()
+  dt_cap  <- rbind(dt_cap, tmp)
+}
+
+# Melt the data table with relevant columns
+NACE_codes <- unique(dt_cap[, .(geo_name, nace_r2_code, nace_r2_name)])
+dt_cap[, c("geo_code", "geo_name", "nace_r2_name") := NULL]
+dt_cap <- melt(dt_cap, id.vars = c("nace_r2_code", "var"))
+dt_cap <- dcast(dt_cap, "nace_r2_code + variable ~ var")
+setnames(dt_cap, c("nace_r2_code", "variable"), c("nace", "year"))
+setkey(dt_cap, "nace", "year")
+
+# Select years
+dt_cap[, year := as.numeric(as.character(year))]
+dt_cap <- dt_cap[between(year, 1995, 2015)]
+
+colnames(dt_cap)
+
+# Compute Different Capital Stock Measures
+
+var_list <- c("IT", "CT", "Soft_DB", "TraEq", "OMach", "OCon", "Rstruc", 
+              "Cult", "RD", "OIPP", "GFCF")
+nominal_list <- c("K_IT", "K_CT", "K_Soft_DB", "K_TraEq", "K_OMach",
+                  "K_OCon", "K_Rstruc", "K_Cult", "K_RD", "K_OIPP")
+# Sum nominal subitems and check if you found K_GFCF
+dt_cap[, K_GFCF_summed := rowSums(.SD), .SDcols = nominal_list]
+dt_cap[1:20, .(K_GFCF_summed,  K_GFCF)]
+dt_cap[, difference := (K_GFCF_summed - K_GFCF) / K_GFCF_summed]
+mean(dt_cap[, difference], na.rm = T)
+dt_cap[, K_GFCF_summed := NULL]
+dt_cap[, difference := NULL]
+
+# Compute Different Capital Stock Measures
+
+setnafill(dt_cap, fill = 0, cols = setdiff(names(dt_cap), "nace"))
+
+# Non-residential total capital stock 
+dt_cap[, K_GFCF_NRes := K_GFCF - K_Rstruc]
+dt_cap[, Kq_GFCF_NRes := K_GFCF_NRes / Ip_GFCF  *100]
+
+# Non-residential tangible capital stock 
+dt_cap[, K_Tang_NRes := K_GFCF - K_Soft_DB - K_RD - K_OIPP - K_Rstruc]
+dt_cap[, Kq_Tang_NRes := K_Tang_NRes / Ip_GFCF *100]
+setnames(dt_cap, "Kq_GFCF", "Kq_GFCF_new")
+dt_cap <- dt_cap[, .(year, nace, Kq_GFCF_NRes, Kq_Tang_NRes)]
+
+# merge into dt
+dt <- merge(dt, dt_cap, by= c("year" , "nace"), all.x=T)
+setkey(dt, "nace", "year")
+
+
 # Export
 saveRDS(dt, "02_Input/dt_Japan.rds")
 saveRDS(NACE_codes, "02_Input/NACE_codes.rds")
