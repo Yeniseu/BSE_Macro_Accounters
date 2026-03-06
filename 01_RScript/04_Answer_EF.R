@@ -8,6 +8,7 @@ library(readxl)
 library(writexl)
 library(dplyr) # sorry, I am a dplyr girl;)
 library(kableExtra)
+library(ggplot2)
 options(print.max = 300, scipen = 50, digits = 2)
 
 
@@ -98,21 +99,21 @@ chart_cum[year == 1995, eval(col_names) := 100]
 chart_cum[, (col_names) := lapply(.SD, function(x) cumprod(x)), .SDcols = col_names]
 chart_cum <- melt(chart_cum, id.vars = "year")
 
-caption <- "GDP Per Worker and Contributions (Japan, 1995=100)"
+caption <- " TFP Index of L(Real Estate, 1995=100)"
 ggplot(chart_cum, aes(x=year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
   scale_color_viridis_d(option = "H",  name = NULL,  guide = guide_legend(nrow = 2), labels = c(
     "g_y" = "Output Per Worker",
-    "capital_contr" = "Capital Contr.",
-    "TFP_contr_hcpwt" = "TFP Contr.",
-    "g_hcpwt" = "Human Capital Contr."
+    "KY_contrib" = "Capital/Output Contr.",
+    "TFP_contrib" = "TFP Contr.",
+    "g_h_lc" = "Human Capital Contr."
   )) +
   geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
   labs(x="Year", y="Index Value", color="") +
-  #labs(title=caption, x="Year", y="Output Per Worker Index", color="") +
+  #labs(title=caption, x="Year", y="Index Value", color="") +
   theme_minimal() + 
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
-ggsave("03_Output/Exercise e/Growth_Acc_Cumulative_PWT.png", width=4, height=3)
+ggsave("03_Output/Exercise e/Growth_Acc_Sector_L.png", width=4, height=3)
 
 
 
