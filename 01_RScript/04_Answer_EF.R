@@ -104,7 +104,7 @@ ggplot(chart_cum, aes(x=year, y=value, color=variable, group=variable)) +
   geom_line(size = 1) + 
   scale_color_viridis_d(option = "H",  name = NULL,  guide = guide_legend(nrow = 2), labels = c(
     "g_y" = "Output Per Worker",
-    "KY_contrib" = "Capital/Output Contr.",
+    "KY_contrib" = "Capital Contr.",
     "TFP_contrib" = "TFP Contr.",
     "g_h_lc" = "Human Capital Contr."
   )) +
