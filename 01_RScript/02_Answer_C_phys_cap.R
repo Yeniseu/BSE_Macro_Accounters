@@ -105,7 +105,7 @@ ggplot(chart_acc2, aes(x=year, y=value, color=variable, group=variable)) +
                      values = c("g_y" = "#000000", "capital_contr_Nres"="#800080", "TFP_contr_NRes"="#ADD8E6", "g_h_lc"="#FFC0CB"),
                      labels = c(
                        "g_y" = "Output Per Worker",
-                       "capital_contr_Nres" = "Capital Contr. (Non_Res. K)",
+                       "capital_contr_Nres" = "Capital Contr. (NRes K)",
                        "TFP_contr_NRes" = "TFP Contr.",
                        "g_h_lc" = "Human Capital Contr."
                      )) +
@@ -126,7 +126,7 @@ ggplot(chart_acc3, aes(x=year, y=value, color=variable, group=variable)) +
                      values = c("g_y" = "#000000", "capital_contr_Tang_Nres"="#800080", "TFP_contr_Tang_NRes"="#ADD8E6", "g_h_lc"="#FFC0CB"),
                      labels = c(
                        "g_y" = "Output Per Worker",
-                       "capital_contr_Tang_Nres" = "Capital Contr. (Non-Res. Tangible K)",
+                       "capital_contr_Tang_Nres" = "Capital Contr. (NRes Tang K)",
                        "TFP_contr_Tang_NRes" = "TFP Contr.",
                        "g_h_lc" = "Human Capital Contr."
                      )) +
@@ -143,11 +143,11 @@ ggsave("03_Output/Exercise c/Physical_capital/Gr_Acc_Tang_Nres.png", width=4, he
 
 
 
-
 #### Cumulative charts starting from 1995=100
 chart_cum <- growth_short[, .(year, g_y, g_h_lc, TFP_contr_hlc, capital_contr,
                               capital_contr_Nres, capital_contr_Tang_Nres,
-                              TFP_contr_NRes, TFP_contr_Tang_NRes
+                              TFP_contr_NRes, TFP_contr_Tang_NRes,
+                              g_KY, g_KY_NRes, g_KY_Tang_NRes
                               )]
 col_names <- setdiff(names(chart_cum), "year")
 chart_cum[, (col_names) := lapply(.SD, function(x) 1+x/100), .SDcols = col_names]
@@ -184,7 +184,7 @@ ggplot(chart_cum2, aes(x=year, y=value, color=variable, group=variable)) +
                      values = c("g_y" = "#2c003e", "capital_contr_Nres"="#00c896", "TFP_contr_NRes"="#f0a202", "g_h_lc"="#8b0000"),
                      labels = c(
                        "g_y" = "Output Per Worker",
-                       "capital_contr_Nres" = "Capital Contr. (Non_Res. K)",
+                       "capital_contr_Nres" = "Capital Contr. (NRes K)",
                        "TFP_contr_NRes" = "TFP Contr.",
                        "g_h_lc" = "Human Capital Contr."
                      )) +
@@ -205,7 +205,7 @@ ggplot(chart_cum3, aes(x=year, y=value, color=variable, group=variable)) +
                         values = c("g_y" = "#2c003e", "capital_contr_Tang_Nres"="#00c896", "TFP_contr_Tang_NRes"="#f0a202", "g_h_lc"="#8b0000"),
                         labels = c(
                           "g_y" = "Output Per Worker",
-                          "capital_contr_Tang_Nres" = "Capital Contr. (Non-Res. Tangible K)",
+                          "capital_contr_Tang_Nres" = "Capital Contr. (NRes Tang K)",
                           "TFP_contr_Tang_NRes" = "TFP Contr.",
                           "g_h_lc" = "Human Capital Contr."
   )) +
@@ -216,3 +216,21 @@ ggplot(chart_cum3, aes(x=year, y=value, color=variable, group=variable)) +
   theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
 ggsave("03_Output/Exercise c/Physical_capital/Growth_Acc_Cumu_NRes_Tang_K.png", width=4, height=3)
 
+# Plot Cumulative 4: 3 types of K cum gr
+chart_cum4 <- chart_cum[variable %in% c("g_KY", "g_KY_NRes", "g_KY_Tang_NRes")]
+caption <- "GDP Per Worker and Contributions (Japan, 1995=100)"
+ggplot(chart_cum4, aes(x=year, y=value, color=variable, group=variable)) +
+  geom_line(size = 1) + 
+  scale_color_manual(name = NULL,  guide = guide_legend(nrow = 1),
+                     values = c("g_KY" = "#2c003e", "g_KY_NRes"="#00c896", "g_KY_Tang_NRes"="#f0a202"),
+                     labels = c(
+                       "g_KY" = "Total K",
+                       "g_KY_NRes" = "Non-Res K",
+                       "g_KY_Tang_NRes" = "Non-Res Tangible K"
+                     )) +
+  geom_hline(yintercept = 100, linetype = "dashed", size = 0.5, color = "black") +
+  labs(x="Year", y="Index Value", color="") +
+  #labs(title=caption, x="Year", y="Index", color="") +
+  theme_minimal() + 
+  theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold"))
+ggsave("03_Output/Exercise c/Physical_capital/Growth_Acc_Cumu_Diff_measures.png", width=4, height=3)
