@@ -33,6 +33,8 @@ ggplot(dt_plot, aes(x = year, y = y_pw, color = nace, group = nace)) +
   theme(
     legend.position = "top",
     legend.text = element_text(size = 15),
+    axis.text = element_text(size = 15),    # axis tick labels
+    axis.title = element_text(size = 15),   # axis titles
     panel.border = element_blank(),
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
@@ -56,6 +58,8 @@ ggplot(dt_plot, aes(x = year, y = y_pw, color = nace, group = nace)) +
   theme(
     legend.position = "top",
     legend.text = element_text(size = 15),
+    axis.text = element_text(size = 15),    # axis tick labels
+    axis.title = element_text(size = 15),   # axis titles
     panel.border = element_blank(),
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
@@ -79,6 +83,8 @@ ggplot(dt_plot, aes(x = year, y = y_pw, color = nace, group = nace)) +
   theme(
     legend.position = "top",
     legend.text = element_text(size = 15),
+    axis.text = element_text(size = 15),    # axis tick labels
+    axis.title = element_text(size = 15),   # axis titles
     panel.border = element_blank(),
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
@@ -108,6 +114,8 @@ p <- ggplot(dt_plot, aes(x = year, y = g_y_pw, color = nace, group = nace)) +
   theme(
     legend.position = "top",
     legend.text = element_text(size = 15),
+    axis.text = element_text(size = 15),    # axis tick labels
+    axis.title = element_text(size = 15),   # axis titles
     panel.border = element_blank(),
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
@@ -133,6 +141,8 @@ p <- ggplot(dt_plot, aes(x = year, y = g_y_pw, color = nace, group = nace)) +
   theme(
     legend.position = "top",
     legend.text = element_text(size = 15),
+    axis.text = element_text(size = 15),    # axis tick labels
+    axis.title = element_text(size = 15),   # axis titles
     panel.border = element_blank(),
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
@@ -159,6 +169,8 @@ p <- ggplot(dt_plot, aes(x = year, y = g_y_pw, color = nace, group = nace)) +
   theme(
     legend.position = "top",
     legend.text = element_text(size = 15),
+    axis.text = element_text(size = 15),    # axis tick labels
+    axis.title = element_text(size = 15),   # axis titles
     panel.border = element_blank(),
     plot.title = element_text(hjust = 0.5, face = "bold")
   )
