@@ -63,7 +63,7 @@ ggsave("03_Output/Exercise b/b_Japan_H_EMP_TOT_MARKET.png",width = 800, height =
 
 # H_EMPE: Using total hours worked by employees ----
 
-dt[, y_pw := VA_Q / H_EMP]
+dt[, y_pw := VA_Q / H_EMPE]
 dt_plot <- dt[nace %in% c("TOT", "MARKT")]
 ggplot(dt_plot, aes(x = year, y = y_pw, color = nace, group = nace)) +
   geom_line(size = 1) +
